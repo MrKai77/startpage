@@ -3,12 +3,19 @@
 
 <head>
   <meta charset="UTF-8">
+
+  <!-- Set the tab icon and name -->
   <title>Home</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚦</text></svg>">
+  
+  <!-- Import library needed for random backgroun image -->
   <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js'></script>
 
   <style>
+    /*  Import font */
     @import url(https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans);
+
+    /*  Body config, pretty basic */
     body {
         background: #000;
         background-repeat: no-repeat;
@@ -17,10 +24,11 @@
         margin: 0;
         padding: 0;
         height: 100vh;
-        /* user-select: none; */
+        user-select: none;
     }
 
-    .clock {
+    /*  Config for all items that show (check the div for more info) */
+    .items {
         width: 100%;
         height: 100%;
         display: flex;
@@ -29,6 +37,7 @@
         align-items: center;
     }
 
+    /*  The hour and minute */
     .hour, .minute {
         font-size: 250px;
         font-weight: bold;
@@ -36,12 +45,16 @@
         margin: -40px;
         letter-spacing: 20px;
     }
+
+    /*  The temperature */
     .temp {
         font-size: 30px;
         font-weight: bold;
         color: rgba(255, 255, 255, 0.7);
         margin: 20px;
     }
+
+    /*  The searchbox (this is the whole box, including the search button) */
     .searchIn {
         background-color: rgba(255, 255, 255, 0.2);
         width: 700px;
@@ -51,6 +64,8 @@
         flex-direction: row;
         align-items: center;
     }
+
+    /* The searchbox (this is the text box where you type things) */
     .searchBox {
         all: unset;
         font-size: 20px;
@@ -59,10 +74,14 @@
         width: 100%;
         padding: 6px 10px;
     }
+
+    /*  The text inside the searchbox */
     ::placeholder {
         color: rgba(255, 255, 255);
         opacity: 0.7; 
     }
+
+    /*  The search button in the searchbox */
     button {
         all: unset;
         cursor: pointer;
@@ -83,7 +102,8 @@
 </head>
 
 <body>
-  <div class="clock">
+  <!-- The "items" class is for all the items (this is pretty basic) -->
+  <div class="items">
     <div class="hour"></div>
     <div class="minute"></div>
     <div class="temp"><t>0.00 °C</t></div>
@@ -93,10 +113,12 @@
     </form>
   </div>
   <script>
+    // Variables for the time and temperature
     var hour = document.querySelector('.hour');
     var minute = document.querySelector('.minute');
     var temp = document.querySelector('.temp');
 
+    // Function to update the clock
     function updateClock() {
       // Get the current time, day , month and year
       var now = new Date();
@@ -113,10 +135,11 @@
       minute.innerHTML = minutes;
     }
 
+    // Update the clock every second
     updateClock();
     setInterval(updateClock, 1000);
 
-
+    // Function to update the temperature (via JSON)
     var getJSON = function(url, callback) {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url, true);
@@ -131,15 +154,17 @@
         };
         xhr.send();
     };
+    // Gets JSON and updates the temperature (And yes, I know my API key is there but I really don't care if you use it)
     getJSON('https://api.openweathermap.org/data/2.5/weather?q=Calgary&units=metric&appid=9dce2a4ddbc4df7f43ae0ac8e6ad58b5',
     function(err, data) {
     if (err !==   null) {
       alert('Error: ' + err);
     } else {
-      // alert('Temperature: ' + data.main.temp + "°C");
+      // Set the temperature in the DIV
       temp.innerHTML = data.main.temp + " °C";
     }
 
+    // Function to set a random photo
     function randPic() {
         var bgm = ['TrainStation1.jpg','TrainStation2.jpg', 'TrainStation3.jpg'];
         $('body').css({
@@ -147,6 +172,7 @@
             'background-size' :   'cover',
         });
     }
+    // Set a random photo (upon every reload)
     randPic();  
   });
 
